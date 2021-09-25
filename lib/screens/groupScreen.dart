@@ -1,3 +1,4 @@
+import 'package:chat_app/screens/additionalScreen.dart';
 import 'package:chat_app/services/db.dart';
 import 'package:chat_app/services/globals.dart';
 import 'package:chat_app/services/models.dart';
@@ -198,7 +199,7 @@ class _GroupScreenBodyState extends State<GroupScreenBody> {
           return Container(
             child: Center(child: Text("Something went wrong!")),
           );
-        } else if (snapshot.hasData) {
+        } else if (snapshot.connectionState == ConnectionState.done) {
           List<Chatroom> data = snapshot.data!;
           if (data.length == 0) {
             return Expanded(
@@ -234,9 +235,7 @@ class _GroupScreenBodyState extends State<GroupScreenBody> {
             ),
           );
         }
-        return Container(
-          color: Theme.of(context).accentColor,
-        );
+        return LoadingScreen();
       },
     );
   }

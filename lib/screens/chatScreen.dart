@@ -25,7 +25,7 @@ class _ChatScreenState extends State<ChatScreen> {
       providers: [
         StreamProvider<List<Chat>>(
           create: (context) {
-            return ChatroomMethods.streamChat(chatroomId: chatroomId);
+            return ChatroomMethods.streamChats(chatroomId: chatroomId);
           },
           initialData: [],
         ),

@@ -4,20 +4,20 @@ import 'package:chat_app/services/globals.dart';
 import 'package:chat_app/services/models.dart';
 import 'package:flutter/material.dart';
 
-class EditAdmin extends StatefulWidget {
-  const EditAdmin({Key? key}) : super(key: key);
+class EditMembers extends StatefulWidget {
+  const EditMembers({Key? key}) : super(key: key);
 
   @override
-  _EditAdminState createState() => _EditAdminState();
+  _EditMembersState createState() => _EditMembersState();
 }
 
-class _EditAdminState extends State<EditAdmin> {
+class _EditMembersState extends State<EditMembers> {
   String cUid = Globals.cAuth.getUser!.uid;
   List<String> invert = [];
 
   @override
   Widget build(BuildContext context) {
-    print("Inside EditAdmin");
+    print("Inside EditMembers");
     Chatroom c = ModalRoute.of(context)?.settings.arguments as Chatroom;
     ThemeData thm = Theme.of(context);
     String cUid = Globals.cAuth.getUser!.uid;
@@ -30,12 +30,12 @@ class _EditAdminState extends State<EditAdmin> {
               List<String> temp = [];
 
               c.members.forEach((element) {
-                bool isAdmin = (c.admins.contains(element) &&
+                bool isMember = (c.members.contains(element) &&
                         !invert.contains(element)) ||
-                    (invert.contains(element) && !c.admins.contains(element));
-                if (isAdmin) temp.add(element);
+                    (invert.contains(element) && !c.members.contains(element));
+                if (isMember) temp.add(element);
               });
-              c.admins = temp;
+              c.members = temp;
               bool val = await ChatroomMethods.updateChatroom(c: c);
               if (val == true) {
                 Navigator.of(context)
@@ -60,9 +60,6 @@ class _EditAdminState extends State<EditAdmin> {
                         thm.textTheme.headline4?.copyWith(color: Colors.blue),
                   ),
                 ),
-                Container(
-                  child: Text("${c.members.length} Participants"),
-                ),
               ],
             ),
             FutureBuilder(
@@ -70,48 +67,39 @@ class _EditAdminState extends State<EditAdmin> {
               builder: (context, AsyncSnapshot<List<Users>> snap) {
                 if (snap.connectionState == ConnectionState.done) {
                   List<Users> users = snap.data!;
+
                   return Expanded(
                     child: ListView.builder(
                       itemCount: users.length,
                       itemBuilder: (context, index) {
                         Users u = users[index];
-                        bool isAdmin = (c.admins.contains(u.uid) &&
+                        bool isMember = (c.members.contains(u.uid) &&
                                 !invert.contains(u.uid)) ||
                             (invert.contains(u.uid) &&
-                                !c.admins.contains(u.uid));
+                                !c.members.contains(u.uid));
                         if (u.uid == cUid) {
                           return Container(
                             height: 0,
                             width: 0,
                           );
                         }
-                        return ListTile(
-                          title: Text(
-                            u.name,
-                            style: thm.textTheme.headline5,
-                          ),
-                          trailing: isAdmin
-                              ? TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      if (invert.contains(u.uid))
-                                        invert.remove(u.uid);
-                                      else
-                                        invert.add(u.uid);
-                                    });
-                                  },
-                                  child: Text("Remove Admin"))
-                              : TextButton(
-                                  onPressed: () {
-                                    setState(() {
-                                      if (invert.contains(u.uid))
-                                        invert.remove(u.uid);
-                                      else
-                                        invert.add(u.uid);
-                                    });
-                                  },
-                                  child: Text("Add Admin")),
-                        );
+                        return isMember
+                            ? ListTile(
+                                title: Text(
+                                  u.name,
+                                  style: thm.textTheme.headline5,
+                                ),
+                                trailing: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        if (invert.contains(u.uid))
+                                          invert.remove(u.uid);
+                                        else
+                                          invert.add(u.uid);
+                                      });
+                                    },
+                                    icon: Icon(Icons.delete)))
+                            : SizedBox.shrink();
                       },
                     ),
                   );

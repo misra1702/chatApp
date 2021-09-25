@@ -153,10 +153,36 @@ class UsersMethods {
 }
 
 class ChatroomMethods {
-  static Future<bool> addChatroom(
-      {required List<String> members,
-      required BuildContext context,
-      required grpName}) async {
+  static Future<bool> updateChatroom({required Chatroom c}) async {
+    Chatroom prevC = await getChatroom(chatroomId: c.chatroomId);
+    await Globals.chatroomRef.doc(c.chatroomId).set({
+      'admins': c.admins,
+      'members': c.members,
+    }, SetOptions(merge: true)).catchError((e) {
+      print(e);
+    });
+    c.members.forEach((member) async {
+      if (!prevC.members.contains(member)) {
+        await Globals.usersRef.doc(member).set({
+          'chatrooms': FieldValue.arrayUnion([member]),
+        }, SetOptions(merge: true));
+      }
+    });
+    prevC.members.forEach((member) async {
+      if (!c.members.contains(member)) {
+        await Globals.usersRef.doc(member).set({
+          'chatrooms': FieldValue.arrayRemove([member]),
+        }, SetOptions(merge: true));
+      }
+    });
+    return true;
+  }
+
+  static Future<bool> addChatroom({
+    required List<String> members,
+    required BuildContext context,
+    required grpName,
+  }) async {
     String snack = "";
     if (members.length < 2) {
       snack = "Please add 2 or more members";
@@ -249,7 +275,7 @@ class ChatroomMethods {
         .map((snap) => Chatroom.fromMap(snap.data()!));
   }
 
-  static Stream<List<Chat>> streamChat({required String chatroomId}) {
+  static Stream<List<Chat>> streamChats({required String chatroomId}) {
     print("Starting Stream of chats for $chatroomId");
     return Globals.chatroomRef
         .doc(chatroomId)

@@ -1,6 +1,7 @@
 import 'package:chat_app/screens/chatScreen.dart';
 import 'package:chat_app/screens/createGroupScreen.dart';
 import 'package:chat_app/screens/editAdmin.dart';
+import 'package:chat_app/screens/editMembers.dart';
 import 'package:chat_app/screens/groupInfo.dart';
 import 'package:chat_app/screens/groupScreen.dart';
 import 'package:chat_app/screens/login.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         '/createGroup': (context) => CreateGroupScreen(),
         '/groupInfo': (context) => GroupInfo(),
         '/editAdmin': (context) => EditAdmin(),
+        '/editMembers': (context)=> EditMembers(),
       },
       home: func(),
     );
