@@ -24,7 +24,11 @@ class _GroupInfoState extends State<GroupInfo> {
         title: Text(ChatroomMethods.getChatroomName(c)),
         actions: [
           PopupMenuButton(
-            child: Icon(Icons.edit),
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Icon(Icons.edit),
+            ),
+            offset: Offset(-10, 20),
             onCanceled: () {},
             onSelected: (int val) {
               if (val == 0) {
@@ -52,10 +56,19 @@ class _GroupInfoState extends State<GroupInfo> {
             itemBuilder: (context) {
               return [
                 PopupMenuItem(
-                  child: Text("Edit admin list"),
+                  child: Text(
+                    "Edit admin list",
+                    style: thm.textTheme.bodyText2,
+                  ),
                   value: 0,
                 ),
-                PopupMenuItem(child: Text("Add or remove members"), value: 1),
+                PopupMenuItem(
+                  child: Text(
+                    "Add or remove members",
+                    style: thm.textTheme.bodyText2,
+                  ),
+                  value: 1,
+                ),
               ];
             },
           )

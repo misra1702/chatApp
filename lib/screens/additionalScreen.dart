@@ -5,12 +5,10 @@ class ErrorScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
+    return  Container(
         child: Center(
           child: Text("Oops! Something went wrong"),
         ),
-      ),
     );
   }
 }
@@ -20,11 +18,9 @@ class LoadingScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
+    return  Container(
         child: CircularProgressIndicator(),
         alignment: Alignment.topCenter,
-      ),
     );
   }
 }

@@ -147,38 +147,49 @@ class _MessagesState extends State<Messages> {
         bool isSender = (c.createdBy == Globals.cAuth.getUser!.displayName);
         return Container(
           alignment: isSender ? Alignment.centerRight : Alignment.centerLeft,
-          child: Container(
-            constraints: BoxConstraints(maxWidth: size.width * 5 / 6),
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
-            margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
-            decoration: isSender
-                ? BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.blue,
-                  )
-                : BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    color: Colors.grey.shade800,
-                  ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment:
-                  isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "~" + c.createdBy,
-                  style: thm.textTheme.bodyText2?.copyWith(fontSize: 10),
+          child: Column(
+            crossAxisAlignment:
+                isSender ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            children: [
+              Container(
+                constraints: BoxConstraints(maxWidth: size.width * 5 / 6),
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 14),
+                margin: EdgeInsets.symmetric(vertical: 5, horizontal: 8),
+                decoration: isSender
+                    ? BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.blue,
+                      )
+                    : BoxDecoration(
+                        borderRadius: BorderRadius.circular(15),
+                        color: Colors.grey.shade800,
+                      ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: isSender
+                      ? CrossAxisAlignment.end
+                      : CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "~" + c.createdBy,
+                      style: thm.textTheme.bodyText2?.copyWith(fontSize: 10),
+                    ),
+                    Text(
+                      c.text,
+                      style: thm.textTheme.bodyText1?.copyWith(fontSize: 17),
+                    ),
+                  ],
                 ),
-                Text(
-                  c.text,
-                  style: thm.textTheme.bodyText1?.copyWith(fontSize: 17),
-                ),
-                Text(
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 8),
+                padding: EdgeInsets.symmetric(horizontal: 14),
+                child: Text(
                   createdTime,
                   style: thm.textTheme.bodyText2?.copyWith(fontSize: 10),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         );
       },

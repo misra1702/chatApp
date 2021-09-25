@@ -29,14 +29,6 @@ class GroupScreen extends StatelessWidget {
             },
             icon: Icon(Icons.logout, size: 30),
           ),
-          // IconButton(
-          //   onPressed: () {
-          //     Navigator.of(context).pushNamed('/userSettings');
-          //   },
-          //   icon: Icon(
-          //     Icons.settings,
-          //   ),
-          // ),
         ],
       ),
       body: Column(

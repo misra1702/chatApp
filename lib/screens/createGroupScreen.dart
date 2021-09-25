@@ -80,46 +80,42 @@ class _CGSBodyState extends State<CGSBody> {
             ),
           ),
           SizedBox(height: 10),
-          noFriends
-              ? Container(
-                  color: Colors.blue,
-                )
-              : Expanded(
-                  child: ListView(
-                    children: widget.frList.map(
-                      (fr) {
-                        return ListTile(
-                          tileColor:
-                              selected.contains(fr.uid) ? selCol : nselCol,
-                          title: Text(fr.name),
-                          trailing: selected.contains(fr.uid)
-                              ? Icon(Icons.done)
-                              : null,
-                          onTap: () {
-                            setState(
-                              () {
-                                selected.remove(fr.uid);
-                              },
-                            );
-                          },
-                          onLongPress: () {
-                            if (selected.contains(fr.uid)) return;
-                            setState(
-                              () {
-                                selected.add(fr.uid);
-                              },
-                            );
-                          },
-                          leading: CircleAvatar(
-                            child: Icon(
-                              Icons.person,
-                            ),
-                          ),
-                        );
-                      },
-                    ).toList(),
-                  ),
-                ),
+          // noFriends
+          //     ? SizedBox.shrink()
+          Expanded(
+            child: ListView(
+              children: widget.frList.map(
+                (fr) {
+                  return ListTile(
+                    tileColor: selected.contains(fr.uid) ? selCol : nselCol,
+                    title: Text(fr.name),
+                    trailing:
+                        selected.contains(fr.uid) ? Icon(Icons.done) : null,
+                    onTap: () {
+                      setState(
+                        () {
+                          selected.remove(fr.uid);
+                        },
+                      );
+                    },
+                    onLongPress: () {
+                      if (selected.contains(fr.uid)) return;
+                      setState(
+                        () {
+                          selected.add(fr.uid);
+                        },
+                      );
+                    },
+                    leading: CircleAvatar(
+                      child: Icon(
+                        Icons.person,
+                      ),
+                    ),
+                  );
+                },
+              ).toList(),
+            ),
+          ),
           ElevatedButton(
             onPressed: () async {
               bool value = await ChatroomMethods.addChatroom(
