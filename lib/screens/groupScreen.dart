@@ -154,9 +154,7 @@ class GroupScreen extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(
-            height: 15,
-          ),
+          SizedBox(height: 15),
           StreamProvider<User?>(
             create: (context) {
               return Globals.cAuth.user;

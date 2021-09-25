@@ -13,18 +13,17 @@ class EditAdmin extends StatefulWidget {
 
 class _EditAdminState extends State<EditAdmin> {
   String cUid = Globals.cAuth.getUser!.uid;
-  Chatroom? c;
+  List<String> invert = [];
 
   @override
   Widget build(BuildContext context) {
     print("Inside EditAdmin");
-    Chatroom d = ModalRoute.of(context)?.settings.arguments as Chatroom;
-    if (c == null) c = d;
+    Chatroom c = ModalRoute.of(context)?.settings.arguments as Chatroom;
     ThemeData thm = Theme.of(context);
     String cUid = Globals.cAuth.getUser!.uid;
     return Scaffold(
       appBar: AppBar(
-        title: Text(c!.grpName),
+        title: Text(c.grpName),
         actions: [
           IconButton(
             onPressed: () {},
@@ -47,21 +46,24 @@ class _EditAdminState extends State<EditAdmin> {
                   ),
                 ),
                 Container(
-                  child: Text("${c!.members.length} Participants"),
+                  child: Text("${c.members.length} Participants"),
                 ),
               ],
             ),
             FutureBuilder(
-              future: ChatroomMethods.getChatroomMembers(c: c!),
+              future: ChatroomMethods.getChatroomMembers(c: c),
               builder: (context, AsyncSnapshot<List<Users>> snap) {
                 if (snap.connectionState == ConnectionState.done) {
                   List<Users> users = snap.data!;
-                  print(users.length);
                   return Expanded(
                     child: ListView.builder(
                       itemCount: users.length,
                       itemBuilder: (context, index) {
                         Users u = users[index];
+                        bool isAdmin = (c.admins.contains(u.uid) &&
+                                !invert.contains(u.uid)) ||
+                            (invert.contains(u.uid) &&
+                                !c.admins.contains(u.uid));
                         if (u.uid == cUid) {
                           return Container(
                             height: 0,
@@ -73,18 +75,24 @@ class _EditAdminState extends State<EditAdmin> {
                             u.name,
                             style: thm.textTheme.headline5,
                           ),
-                          trailing: c!.admins.contains(u.uid)
+                          trailing: isAdmin
                               ? TextButton(
                                   onPressed: () {
                                     setState(() {
-                                      c!.admins.add(u.uid);
+                                      if (invert.contains(u.uid))
+                                        invert.remove(u.uid);
+                                      else
+                                        invert.add(u.uid);
                                     });
                                   },
                                   child: Text("Remove Admin"))
                               : TextButton(
                                   onPressed: () {
                                     setState(() {
-                                      c!.admins.remove(u.uid);
+                                      if (invert.contains(u.uid))
+                                        invert.remove(u.uid);
+                                      else
+                                        invert.add(u.uid);
                                     });
                                   },
                                   child: Text("Add Admin")),

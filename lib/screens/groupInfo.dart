@@ -28,9 +28,25 @@ class _GroupInfoState extends State<GroupInfo> {
             onCanceled: () {},
             onSelected: (int val) {
               if (val == 0) {
-                Navigator.of(context).pushNamed('/editAdmin',arguments: c);
+                if (c.admins.contains(Globals.cAuth.getUser!.uid))
+                  Navigator.of(context).pushNamed('/editAdmin', arguments: c);
+                else {
+                  SnackBar snack = SnackBar(
+                    content: Text("Only group admins can change group details"),
+                  );
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(snack);
+                }
               } else if (val == 1) {
-                Navigator.of(context).pushNamed('/editMembers',arguments: c);
+                if (c.admins.contains(Globals.cAuth.getUser!.uid))
+                  Navigator.of(context).pushNamed('/editMembers', arguments: c);
+                else {
+                  SnackBar snack = SnackBar(
+                    content: Text("Only group admins can change group details"),
+                  );
+                  ScaffoldMessenger.of(context).clearSnackBars();
+                  ScaffoldMessenger.of(context).showSnackBar(snack);
+                }
               }
             },
             itemBuilder: (context) {
